@@ -26,27 +26,27 @@ ilosc_produktow = range(0, int((state['ileproduktow'])))
 df = pd.read_csv(os.getcwd() + "\\bf3_strona.csv", sep=' ')
 opis = pd.read_csv(os.getcwd() + "\\opis.csv", sep=' ')
 browser.get("https://aliside.com/login")
-
+SzukajXPATH=browser.find_element_by_xpath
 
 def spinner():
     time.sleep(2)
     try:
-        browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button/div')
+        SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button/div')
         print("Błąd, czekam.")
         time.sleep(120)
     except NoSuchElementException:
         pass
     finally:
         try:
-            browser.find_element(By.XPATH, "/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
-            browser.find_element(By.XPATH, "/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
+            SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
+            SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
         except:
             pass
 
 
 def capttcha():
     try:
-        browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/ngx-recaptcha2')
+        SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/ngx-recaptcha2')
         print('UZUPLENIJ CAPTCHE I KLIKNIJ ENTER: ')
     except NoSuchElementException:
             pass
@@ -55,20 +55,20 @@ def capttcha():
 def sprawdzenie_czy_jest_kategoria():
     time.sleep(4)
     try:
-        browser.find_element_by_xpath('// *[ @ id = "catalogs"] / div / div / tag / div / div / div')
+        SzukajXPATH('// *[ @ id = "catalogs"] / div / div / tag / div / div / div')
 
     except NoSuchElementException:
         print("Błąd, czekam.")
         time.sleep(90)
     finally:
         print("Druga próba szukania kategorii")
-        browser.find_element_by_xpath('// *[ @ id = "catalogs"] / div / div / tag / div / div / div')
+        SzukajXPATH('// *[ @ id = "catalogs"] / div / div / tag / div / div / div')
 
 
 def error1():
     time.sleep(4)
     try:
-        browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-single-product/div[3]/div')
+        SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-product/div[3]/div')
         print("Błąd, czekam.")
         time.sleep(120)
     except NoSuchElementException:
@@ -78,7 +78,7 @@ def error1():
 def error():
     time.sleep(4)
     try:
-        browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/app-page-loader/div')
+        SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/app-page-loader/div')
         print("Błąd, czekam.")
         time.sleep(120)
     except NoSuchElementException:
@@ -113,7 +113,7 @@ def uzupelnienie_danych(x):
     )
     res = client.DeeplinksManage.create(1136372, 6115, ulp=df['NAME'][x], subid='excel')
     szukaj = browser.find_element
-    szukaj(By.XPATH, "/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[1]/div/div[2]/div/div/div/p").click()
+    SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[1]/div/div[2]/div/div/div/p").click()
     szukaj(By.ID, "description").send_keys(opis['OPIS'])
     szukaj(By.ID, "note").send_keys("https://lqnlqnlqn.x.yupoo.com" + df['LINKS'][x])
     szukaj(By.ID, "link").send_keys(res)
@@ -124,7 +124,7 @@ def uzupelnienie_danych(x):
 
 def klikniecie_zapisz():
     try:
-        browser.find_element(By.XPATH, "/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
+        SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
         print("Zapisano produkt nr: ", [x])
     except:
         pass
@@ -132,20 +132,20 @@ def klikniecie_zapisz():
 
 def klikniecie_zapisz_prze_captcha():
     try:
-        browser.find_element(By.XPATH, "/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[11]/btn-loading/button").click()
+        SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[11]/btn-loading/button").click()
         print("Zapisano produkt nr: ", [x])
     except:
         pass
 
 
 def przechodzenie_do_dodawania_zdj():
-    browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[4]/div[1]/app-product-catalog-thumbnail').click()
+    SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[4]/div[1]/app-product-catalog-thumbnail').click()
     print("Przechodzę do dodawania zdjeć.")
 
 
 def klikniece_dodaj_zdj():
     time.sleep(3)
-    browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-single-product/div[1]/div/div[2]/div').click()
+    SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-product/div[1]/div/div[2]/div').click()
 
 
 def dodawanie_zdj(x):
@@ -156,7 +156,7 @@ def dodawanie_zdj(x):
         z = z+1
         try:
             path = (os.getcwd() + "\\"+str(x) + "\\"+str(z)+"big" + ".jpg")
-            browser.find_element_by_xpath('/html/body/input').send_keys(path)
+            SzukajXPATH('/html/body/input').send_keys(path)
         except:
             pass
     time.sleep(30)
