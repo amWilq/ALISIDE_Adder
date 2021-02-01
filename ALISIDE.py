@@ -18,7 +18,8 @@ subprocess.run("python CSVmaker.py", shell=True)
 print("Uruchamiam PobieranieZdjec.py\n [...]")
 subprocess.Popen("python PobieranieZdjec.py", shell=True)
 
-
+url = state['yupoo_link']
+text = url
 
 
 browser = webdriver.Chrome(os.getcwd() + "\\Chromedriver")
@@ -113,9 +114,10 @@ def uzupelnienie_danych(x):
     )
     res = client.DeeplinksManage.create(1136372, 6115, ulp=df['NAME'][x], subid='excel')
     szukaj = browser.find_element
+    head, sep, tail = text.partition('x.yupoo.com')
     SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[1]/div/div[2]/div/div/div/p").click()
     szukaj(By.ID, "description").send_keys(opis['OPIS'])
-    szukaj(By.ID, "note").send_keys("https://lqnlqnlqn.x.yupoo.com" + df['LINKS'][x])
+    szukaj(By.ID, "note").send_keys(head + "x.yupoo.com" + df['LINKS'][x])
     szukaj(By.ID, "link").send_keys(res)
     szukaj(By.ID, "name").send_keys(df['PHOTOS'][x])
     szukaj(By.XPATH, "/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[8]/label[3]/span[1]").click()
