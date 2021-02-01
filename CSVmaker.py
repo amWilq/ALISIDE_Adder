@@ -3,6 +3,7 @@ def TworzenieGlownegoPlikuCSV():
     from bs4 import BeautifulSoup
     import csv
     import json
+    import os
 
     with open('UZUPELNIJ.json')as f:
         data = json.load(f)
@@ -17,7 +18,9 @@ def TworzenieGlownegoPlikuCSV():
     WhenStop = state['ileproduktow']
 
     head, sep, tail = text.partition('x.yupoo.com')
-    print(head + "x.yupoo.com")
+    print("Pobieram zdjecia z strony " + head + "x.yupoo.com")
+
+
 
     response = requests.get(url)
     data = response.text
@@ -54,7 +57,8 @@ def TworzenieGlownegoPlikuCSV():
 
 
     f.close()
-    print("PLIK Z LINKAMI ZOSTAWL UTOWRZONY...")
+    print("Plik csv zawierający linki znajdziesz w " + os.getcwd())
+    print("Zaczynam pobieranie zdjęć.")
     import subprocess
 
     print("Uruchamiam PobieranieZdjec.py\n [...]")

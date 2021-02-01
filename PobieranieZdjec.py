@@ -77,7 +77,7 @@ def zdjecia(x):
                         download_save(url, col)
 
                         licznik
-                print(licznik)
+                print("Pobrano " + str(licznik) + " zdjęć.")
 
         except:
             pass
