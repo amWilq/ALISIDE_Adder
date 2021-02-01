@@ -50,7 +50,7 @@ class init(object):
             self._ssid()
 
     def _check_token(self):
-        """ Проверка токена """
+
 
         url = 'https://app.epn.bz/user/profile'
 
@@ -72,7 +72,7 @@ class init(object):
             return False
 
     def _save_session(self):
-        """ Сохранение токенов в файл """
+
 
         config_file = 'epn.json'
         with open(config_file, 'r') as config:
@@ -85,7 +85,7 @@ class init(object):
             json.dump(cfg, config)
 
     def _token_refresh(self):
-        """ Обновление токена """
+
 
         url = 'https://oauth2.epn.bz/token/refresh'
 
@@ -115,7 +115,7 @@ class init(object):
             self._ssid()
 
     def _ssid(self):
-        """ Получение SSID """
+
 
         url = 'https://oauth2.epn.bz/ssid'
 
@@ -137,7 +137,7 @@ class init(object):
             raise Exception('Error code: {}'.format(response.status_code))
 
     def _jwt_auth(self):
-        """ Авторизация """
+
 
         url = 'https://oauth2.epn.bz/token'
 
@@ -174,7 +174,7 @@ class init(object):
         return EpnApiMethod(self)
 
     def method(self, params, values = None):
-        """ Обработка запроса """
+
 
         query_params = params.split('.')
         type = query_params[0].lower()
