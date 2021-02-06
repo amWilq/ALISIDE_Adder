@@ -7,13 +7,14 @@ import os
 from selenium.common.exceptions import NoSuchElementException
 import json
 import subprocess
+import shutil
 
 with open('UZUPELNIJ.json')as f:
     data = json.load(f)
 for state in data["DANE"]:
     break
 
-print("Uruchamiam CSVmaker.py\n [...]")
+print("Uruchamiam CSVmaker.py [...]")
 subprocess.run("python CSVmaker.py", shell=True)
 print("Uruchamiam PobieranieZdjec.py\n [...]")
 subprocess.Popen("python PobieranieZdjec.py", shell=True)
@@ -100,6 +101,7 @@ logowanie()
 
 def przejscie_do_dodawania():
     browser.get("https://aliside.com/user/catalogs/1538531b-817f-458f-a33b-03d5b8ef906e")
+    SzukajXPATH( "/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[1]/div/div[2]/div/div/div/p").click()
 
 
 def uzupelnienie_danych(x):
@@ -115,7 +117,6 @@ def uzupelnienie_danych(x):
     res = client.DeeplinksManage.create(1136372, 6115, ulp=df['NAME'][x], subid='excel')
     szukaj = browser.find_element
     head, sep, tail = text.partition('x.yupoo.com')
-    SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[1]/div/div[2]/div/div/div/p").click()
     szukaj(By.ID, "description").send_keys(opis['OPIS'])
     szukaj(By.ID, "note").send_keys(head + "x.yupoo.com" + df['LINKS'][x])
     szukaj(By.ID, "link").send_keys(res)
@@ -124,10 +125,12 @@ def uzupelnienie_danych(x):
     time.sleep(5)
 
 
+
 def klikniecie_zapisz():
     try:
         SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
         print("Zapisano produkt nr: ", [x])
+
     except:
         pass
 
@@ -161,8 +164,39 @@ def dodawanie_zdj(x):
             SzukajXPATH('/html/body/input').send_keys(path)
         except:
             pass
+
+        try:
+            pos = (os.getcwd() + "\\" + str(x - 1))
+            shutil.rmtree(pos)
+            print("Usunięto folder ze zdjeciami.")
+        except:
+            pass
     time.sleep(30)
 
+
+def pelene_uzupelenie_dachyncj(x):
+    error()
+    przejscie_do_dodawania()
+    error()
+    uzupelnienie_danych(x)
+    sprawdzenie_czy_jest_kategoria()
+    capttcha()
+    klikniecie_zapisz()
+    klikniecie_zapisz_prze_captcha()
+    spinner()
+    klikniecie_zapisz()
+    error()
+    error1()
+    przechodzenie_do_dodawania_zdj()
+    error()
+    error1()
+    klikniece_dodaj_zdj()
+    dodawanie_zdj(x)
+    error()
+
+
+for x in ilosc_produktow:
+    pelene_uzupelenie_dachyncj(x)
 
 def pelene_uzupelenie_dachyncj(x):
     error()
