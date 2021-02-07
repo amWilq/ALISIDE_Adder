@@ -11,7 +11,8 @@ pip install -r requirements.txt
 
 ## enter your details into the file
 
-UZUPELNIJ.json \n
+UZUPELNIJ.json 
+##
 opis.csv
 
 
