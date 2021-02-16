@@ -9,7 +9,6 @@ def TworzenieGlownegoPlikuCSV():
         data = json.load(f)
     for state in data["DANE"]:
         break
-
     f = open("bf3_strona.csv", "w", newline="", encoding="utf-8")
     writer = csv.writer(f, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
 
