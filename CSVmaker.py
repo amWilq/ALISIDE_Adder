@@ -43,8 +43,11 @@ def TworzenieGlownegoPlikuCSV():
         soup = BeautifulSoup(data, 'lxml')
         rows1 = (soup.find('span', class_="showalbumheader__gallerytitle"))
         rows = (soup.find('a', rel="nofollow noopener"))
-        v = rows.text
-        x = rows1.text
+        try:
+            v = rows.text
+            x = rows1.text
+        except:
+            v = "https://pl.aliexpress.com/"
         row2.append(v)
         row3.append(x)
         print(x)
