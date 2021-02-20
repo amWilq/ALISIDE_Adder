@@ -3,10 +3,11 @@
     {
       "haslo": "",
       "email": "",
-      "ileproduktow": "5",
-      "client_id": "CLIENT ID Z EPN",
-      "yupoo_link": "https://lqnlqnlqn.x.yupoo.com/albums?tab=gallery",
-      "client_secret": "CLIENT SECRET Z EPN"
+      "OdKtoregoProduktuDodawac": "0",
+      "ileproduktow": "50",
+      "client_id": "",
+      "yupoo_link": "https://lqnlqnlqn.x.yupoo.com/albums?tab=gallery&page=2",
+      "client_secret": ""
 
 
     }
