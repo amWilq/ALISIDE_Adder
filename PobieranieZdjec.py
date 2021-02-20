@@ -1,19 +1,19 @@
 from retrying import retry
 import os
+import requests
+from bs4 import BeautifulSoup
+import csv
+import pandas as pd
+import json
+
+with open('UZUPELNIJ.json')as f:
+    data = json.load(f)
+for state in data["DANE"]:
+    break
+
 
 @retry(stop_max_attempt_number=5)
 def TworzeniePlikowTESTY(X):
-    import requests
-    from bs4 import BeautifulSoup
-    import csv
-    import pandas as pd
-    import os
-    import json
-
-    with open('UZUPELNIJ.json')as f:
-        data = json.load(f)
-    for state in data["DANE"]:
-        break
 
     try:
         with open((str(X) + 'TESTY.csv'), 'w', newline='') as file:
@@ -38,7 +38,7 @@ def TworzeniePlikowTESTY(X):
             for x in szukaj:
                 q = x['data-src']
                 writer.writerow(['https:' + q])
-    except:
+    except Exception:
         pass
 
 
@@ -62,9 +62,8 @@ def zdjecia(x):
                 res = c.get(url, timeout=None)
                 with open(f'{folder}/{url.split("/")[-2]}.jpg', 'wb') as f:
                     f.write(res.content)
-            except:
+            except Exception:
                 pass
-            # dfzdj = pd.read_csv("C:\\Users\\Lukasz\\Desktop\\PROJEKTY PYTHON\\W TRAKCIE\\" + str(x) + "TESTY.csv")
 
         dfzdj = pd.read_csv(os.getcwd() + '\\' + str(x) + "TESTY.csv")
         licznik = 0
@@ -75,27 +74,26 @@ def zdjecia(x):
                     licznik += 1
                     if str(url).startswith("http"):
                         download_save(url, col)
-
-                        licznik
                 print("Pobrano " + str(licznik) + " zdjęć.")
 
-        except:
+        except Exception:
             pass
         try:
             path = (os.getcwd() + '\\' + col)
             files = os.listdir(path)
             for index, file in enumerate(files):
                 os.rename(os.path.join(path, file), os.path.join(path, ''.join([str(index), 'big.jpg'])))
-        except:
+        except Exception:
             pass
-    except:
+    except Exception:
         pass
 
+ilosc_produktow = range(int((state['OdKtoregoProduktuDodawac'])), int((state['ileproduktow'])))
 
-for x in range(0,120):
+for x in ilosc_produktow:
     TworzeniePlikowTESTY(x)
     zdjecia(x)
     try:
         os.remove(str(x) + 'TESTY.csv')
-    except:
+    except Exception:
         pass

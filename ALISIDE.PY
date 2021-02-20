@@ -87,6 +87,25 @@ def error():
     except NoSuchElementException:
         pass
 
+def error3():
+    try:
+        browser.find_element_by_xpath("/ html / body / app - root / app - admin - layout / div / div[3] / \
+        app - single - catalog / app - page - loader / div")
+        print("Błąd, czekam./module-loader/1")
+        time.sleep(120)
+    except:
+        print("Brak module-loadera1")
+        pass
+
+    try:
+        browser.find_element_by_xpath("/ app - page - loader")
+        print("Błąd, czekam./module-loader/2")
+        time.sleep(120)
+
+    except:
+        print("Brak module-loadera2")
+        pass
+
 
 def logowanie():
     username_textbox = browser.find_element_by_id("email")
@@ -176,8 +195,10 @@ def dodawanie_zdj(x):
 
 
 def pelene_uzupelenie_dachyncj(x):
+    error3()
     error()
     przejscie_do_dodawania()
+    error3()
     error()
     uzupelnienie_danych(x)
     sprawdzenie_czy_jest_kategoria()
@@ -194,6 +215,7 @@ def pelene_uzupelenie_dachyncj(x):
     klikniece_dodaj_zdj()
     dodawanie_zdj(x)
     error()
+    error3()
 
 
 for x in ilosc_produktow:
