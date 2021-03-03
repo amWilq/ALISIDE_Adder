@@ -220,27 +220,3 @@ def pelene_uzupelenie_dachyncj(x):
 
 for x in ilosc_produktow:
     pelene_uzupelenie_dachyncj(x)
-
-def pelene_uzupelenie_dachyncj(x):
-    error()
-    przejscie_do_dodawania()
-    error()
-    uzupelnienie_danych(x)
-    sprawdzenie_czy_jest_kategoria()
-    capttcha()
-    klikniecie_zapisz()
-    klikniecie_zapisz_prze_captcha()
-    spinner()
-    klikniecie_zapisz()
-    error()
-    error1()
-    przechodzenie_do_dodawania_zdj()
-    error()
-    error1()
-    klikniece_dodaj_zdj()
-    dodawanie_zdj(x)
-    error()
-
-
-for x in ilosc_produktow:
-    pelene_uzupelenie_dachyncj(x)
