@@ -6,11 +6,8 @@ import csv
 import pandas as pd
 import json
 
-with open('UZUPELNIJ.json')as f:
-    data = json.load(f)
-for state in data["DANE"]:
-    break
-
+with open('test.json')as f:
+    dataJSON = json.load(f)
 
 @retry(stop_max_attempt_number=5)
 def TworzeniePlikowTESTY(X):
@@ -19,10 +16,11 @@ def TworzeniePlikowTESTY(X):
         with open((str(X) + 'TESTY.csv'), 'w', newline='') as file:
             writer = csv.writer(file, delimiter=',')
             df = pd.read_csv(os.getcwd() + "\\bf3_strona.csv", sep=' ')
-
             TEXT = (df['LINKS'][X])
-            url = state['yupoo_link']
+
+            url = dataJSON['DANE_ALISIDE']["yupoo_link"]
             text = url
+
             head, sep, tail = text.partition('x.yupoo.com')
             url = head + "x.yupoo.com" + TEXT
 
@@ -88,7 +86,7 @@ def zdjecia(x):
     except Exception:
         pass
 
-ilosc_produktow = range(int((state['OdKtoregoProduktuDodawac'])), int((state['ileproduktow'])))
+ilosc_produktow = range(int(dataJSON["DANE_ALISIDE"]["OdKtoregoProduktuDodawac"]),(int(dataJSON["DANE_ALISIDE"]["ileproduktow"])))
 
 for x in ilosc_produktow:
     TworzeniePlikowTESTY(x)

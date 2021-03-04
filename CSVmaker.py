@@ -5,16 +5,16 @@ def TworzenieGlownegoPlikuCSV():
     import json
     import os
 
-    with open('UZUPELNIJ.json')as f:
+    with open('test.json')as f:
         data = json.load(f)
-    for state in data["DANE"]:
-        break
+
+
     f = open("bf3_strona.csv", "w", newline="", encoding="utf-8")
     writer = csv.writer(f, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
 
-    url = state['yupoo_link']
+    url = data['DANE_ALISIDE']["yupoo_link"]
     text = url
-    WhenStop = state['ileproduktow']
+    WhenStop = (data["DANE_ALISIDE"]["ileproduktow"])
 
     head, sep, tail = text.partition('x.yupoo.com')
     print("Pobieram zdjecia z strony " + head + "x.yupoo.com")
@@ -42,7 +42,7 @@ def TworzenieGlownegoPlikuCSV():
         soup = BeautifulSoup(data, 'lxml')
         rows1 = (soup.find('span', class_="showalbumheader__gallerytitle"))
         rows = (soup.find('a', rel="nofollow noopener"))
-        x = rows1.text
+        x = (rows1.text)
 
         try:
             v = rows.text
