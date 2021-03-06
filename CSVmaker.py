@@ -6,15 +6,15 @@ def TworzenieGlownegoPlikuCSV():
     import os
 
     with open('test.json')as f:
-        data = json.load(f)
+        dataJSON = json.load(f)
 
 
     f = open("bf3_strona.csv", "w", newline="", encoding="utf-8")
     writer = csv.writer(f, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
 
-    url = data['DANE_ALISIDE']["yupoo_link"]
+    url = dataJSON['DANE_ALISIDE']["yupoo_link"]
     text = url
-    WhenStop = (data["DANE_ALISIDE"]["ileproduktow"])
+    WhenStop = (dataJSON["DANE_ALISIDE"]["ileproduktow"])
 
     head, sep, tail = text.partition('x.yupoo.com')
     print("Pobieram zdjecia z strony " + head + "x.yupoo.com")

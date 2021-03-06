@@ -59,15 +59,32 @@ def capttcha():
     except NoSuchElementException:
             pass
 
+    while True:
+        t = SzukajXPATH('//*[@id="catalogs"]/div/div/tag-input-form/form/input')
+        if t.get_attribute("aria-label") == "Wpisz nazwe katalogu":
+            print("JEST OK")
+            break
+        else:
+            browser.refresh()
+
 
 def error():
+    while True:
+        try:
+            SzukajXPATH('// *[ @ id = "catalogs"] / div / div / tag - input - form / form / input')
+            time.sleep(1)
+            print("Brak kategorii, czekam.")
+            time.sleep(5)
+
+        except:
+            break
 
     while True:
         try:
             SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-product/div[3]/div')
             time.sleep(6)
 
-        except NoSuchElementException:
+        except:
             break
 
     while True:
@@ -75,7 +92,7 @@ def error():
             SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/app-page-loader/div')
             time.sleep(5)
 
-        except NoSuchElementException:
+        except:
             break
 
     while True:
@@ -85,7 +102,7 @@ def error():
             SzukajXPATH('/ html / body / app - root / app - admin - layout / div / div[ 3] / app - single - catalog / app - page - loader / div / div')
             time.sleep(5)
 
-        except NoSuchElementException:
+        except:
             break
 
 
@@ -112,17 +129,7 @@ def przejscie_do_dodawania():
 
 def uzupelnienie_danych(x):
 
-    while True:
-        try:
-            SzukajXPATH('// *[ @ id = "catalogs"] / div / div / tag - input - form / form / input')
-
-            time.sleep(1)
-            print("Brak kategorii, czekam.")
-            time.sleep(5)
-
-        except:
-            print("Kategoria produktu nr:", [x], "znaleźiona.")
-            break
+    error()
 
     grant_type = (data["DANE_EPN"]['grant_type'])
     client_id = (data["DANE_EPN"]['client_id'])
@@ -206,6 +213,7 @@ def dodawanie_zdj(x):
             pos = (os.getcwd() + "\\" + str(x - 1))
             shutil.rmtree(pos)
             print("Usunięto folder ze zdjeciami.")
+            print("Produkt nr:",[x], "dodano poprawnie.")
         except:
             pass
     time.sleep(35)
@@ -215,14 +223,17 @@ def klikniecie_zapisz():
 
     while True:
         try:
-            SzukajXPATH('// *[ @ id = "catalogs"] / div / div / tag - input - form / form / input')
-
+            t = SzukajXPATH('//*[@id="catalogs"]/div/div/tag/div/div/div')
+            t.get_attribute("title")
+            if t is not None:
+                break
+            print(t)
             time.sleep(1)
-            print("Brak kategorii, czekam.")
-            time.sleep(5)
+            print("Kategoria produktu nr:", [x], t)
+            break
 
         except:
-            print("Kategoria produktu nr:", [x], "znaleźiona.")
+            print(".a.sdas")
             break
 
     while True:
