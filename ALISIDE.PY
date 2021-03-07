@@ -211,7 +211,7 @@ def dodawanie_zdj(a):
         try:
             path = (os.getcwd() + "\\" + str(a) + "\\" + str(z) + "big" + ".jpg")
             SzukajXPATH('/html/body/input').send_keys(path)
-        except NoSuchElementException:
+        except Exception:
             pass
 
         try:
