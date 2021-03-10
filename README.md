@@ -23,3 +23,8 @@ opis.csv
 python ALISIDE.py
 
 ```
+
+### TO DO LIST
+
+- [x] CHANGE THE DATA TO JSON FORMAT
+- [x] UI
