@@ -146,9 +146,9 @@ def uzupelnienie_danych(y):
         print(e)
         return
 
-    API_EPN = client.api()
+    api = client.api()
 
-    makeDeeplink = API_EPN.post.create_creative(
+    makeDeeplink = api.post.create_creative(
 
         link=df['NAME'][y],
         offerId=1,  # AliExpress
@@ -156,9 +156,9 @@ def uzupelnienie_danych(y):
         type='deeplink'
     )
     newDeeplink = makeDeeplink['data']['attributes']['code']
-    shortDomains = API_EPN.get.short_domains()
+    shortDomains = api.get.short_domains()
     allDomains = shortDomains['data']['attributes']
-    shortDeeplink = API_EPN.post.short_link(
+    shortDeeplink = api.post.short_link(
         urlContainer=newDeeplink,
         domainCutter=allDomains[0]  # ali.pub
     )
