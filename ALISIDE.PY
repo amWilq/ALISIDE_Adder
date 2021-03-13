@@ -13,9 +13,9 @@ from selenium.webdriver.common.by import By
 
 print("Uruchamiam CSVmaker.py [...]")
 subprocess.run("python CSVmaker.py", shell=True)
-with open('test.json')as f:
+
+with open('test.json')as f,open('DATA.json')as ff:
     data = json.load(f)
-with open('DATA.json')as ff:
     JSON = json.load(ff)
 
 subprocess.Popen("python PobieranieZdjec.py", shell=True)
