@@ -3,49 +3,45 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import csv
-import pandas as pd
 import json
+import pandas as pd
+import requests
+import os
 
-with open('test.json')as f:
+with open('test.json')as f, open('DATA.json')as ff:
     dataJSON = json.load(f)
+    JSON = json.load(ff)
+
 
 @retry(stop_max_attempt_number=5)
 def TworzeniePlikowTESTY(X):
-
     try:
         with open((str(X) + 'TESTY.csv'), 'w', newline='') as file:
             writer = csv.writer(file, delimiter=',')
-            df = pd.read_csv(os.getcwd() + "\\bf3_strona.csv", sep=' ')
-            TEXT = (df['LINKS'][X])
 
+            TEXT = JSON[str(X)]["LINKS"]
             url = dataJSON['DANE_ALISIDE']["yupoo_link"]
-            text = url
 
-            head, sep, tail = text.partition('x.yupoo.com')
+            head, sep, tail = url.partition('x.yupoo.com')
             url = head + "x.yupoo.com" + TEXT
 
             response = requests.get(url, timeout=None)
             data = response.content
             soup = BeautifulSoup(data, 'lxml')
-            szukaj = soup.select('.image__landscape')
+
             writer.writerow([X])
-            for x in szukaj:
-                q = x['data-src']
-                writer.writerow(['https:' + q])
+
             szukaj = soup.select('.image__portrait')
-            for x in szukaj:
-                q = x['data-src']
+            for _ in szukaj:
+                q = _['data-src']
                 writer.writerow(['https:' + q])
-    except Exception:
+    except Exception as ex:
+        print(ex)
         pass
 
 
 @retry(stop_max_attempt_number=5)
 def zdjecia(x):
-    import pandas as pd
-    import requests
-    import os
-
     try:
         def create_directory(directory):
             if not os.path.exists(directory):
@@ -60,7 +56,8 @@ def zdjecia(x):
                 res = c.get(url, timeout=None)
                 with open(f'{folder}/{url.split("/")[-2]}.jpg', 'wb') as f:
                     f.write(res.content)
-            except Exception:
+            except Exception as ConnError:
+                print(ConnError)
                 pass
 
         dfzdj = pd.read_csv(os.getcwd() + '\\' + str(x) + "TESTY.csv")
@@ -81,17 +78,21 @@ def zdjecia(x):
             files = os.listdir(path)
             for index, file in enumerate(files):
                 os.rename(os.path.join(path, file), os.path.join(path, ''.join([str(index), 'big.jpg'])))
-        except Exception:
+        except Exception as RenameError:
+            print(RenameError)
             pass
     except Exception:
         pass
 
-ilosc_produktow = range(int(dataJSON["DANE_ALISIDE"]["OdKtoregoProduktuDodawac"]),(int(dataJSON["DANE_ALISIDE"]["ileproduktow"])))
+
+ilosc_produktow = range(int(dataJSON["DANE_ALISIDE"]["OdKtoregoProduktuDodawac"]),
+                        (int(dataJSON["DANE_ALISIDE"]["ileproduktow"])))
 
 for x in ilosc_produktow:
     TworzeniePlikowTESTY(x)
     zdjecia(x)
     try:
         os.remove(str(x) + 'TESTY.csv')
-    except Exception:
+    except Exception as e:
+        print(e)
         pass

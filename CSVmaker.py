@@ -1,72 +1,75 @@
-def TworzenieGlownegoPlikuCSV():
-    import requests
-    from bs4 import BeautifulSoup
-    import csv
-    import json
-    import os
+import requests
+from bs4 import BeautifulSoup
+import json
+import os
 
+
+def TworzenieGlownegoPlikuCSV():
     with open('test.json')as f:
         dataJSON = json.load(f)
 
-
-    f = open("bf3_strona.csv", "w", newline="", encoding="utf-8")
-    writer = csv.writer(f, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
+    file = open("to_fix.json", "w")
+    file = open("to_fix.json", "r+")
+    file.truncate(0)
+    file.close()
 
     url = dataJSON['DANE_ALISIDE']["yupoo_link"]
     text = url
-    WhenStop = (dataJSON["DANE_ALISIDE"]["ileproduktow"])
 
     head, sep, tail = text.partition('x.yupoo.com')
-    print("Pobieram zdjecia z strony " + head + "x.yupoo.com")
-
-
 
     response = requests.get(url)
     data = response.text
     soup = BeautifulSoup(data, 'lxml')
-    writer.writerow(["LINKS", "NAME", "PHOTOS"])
 
-    row1 = []
-    row2 = []
-    row3 = []
-
-    for link in soup.findAll('a', class_='album__main'):
-        q = (link.get('href'))
-        row1.append(q)
     count = 0
     for link in soup.findAll('a', class_='album__main'):
-        q = (link.get('href'))
-        new_url = head + "x.yupoo.com" + q
-        response = requests.get(new_url)
-        data = response.text
-        soup = BeautifulSoup(data, 'lxml')
-        rows1 = (soup.find('span', class_="showalbumheader__gallerytitle"))
-        rows = (soup.find('a', rel="nofollow noopener"))
-        x = (rows1.text)
+        with open('to_fix.json', 'a') as ff:
 
-        try:
-            v = rows.text
-        except:
-            v = "https://pl.aliexpress.com/"
+            q = (link.get('href'))
+            new_url = head + "x.yupoo.com" + q
+            response = requests.get(new_url)
+            data = response.text
+            soup = BeautifulSoup(data, 'lxml')
+            rows1 = (soup.find('span', class_="showalbumheader__gallerytitle"))
+            rows = (soup.find('a', rel="nofollow noopener"))
+            x = rows1.text
 
-        row2.append(v)
-        row3.append(x)
-        print(x)
-        count += 1
-        if count == int(WhenStop):
-            break
+            try:
+                v = rows.text
+            except Exception as e:
+                print(e)
+                v = "https://pl.aliexpress.com/"
 
-    for c in range(len(row3)):
-        writer.writerow([row1[c], row2[c], row3[c]])
+            count += 1
+            content = ({count - 1: ({'LINKS': q, 'NAME': v, 'PHOTOS': x})})
 
+            print(count - 1)
+
+            json.dump(content, ff, indent=2, sort_keys=True)
+
+            WhenStop = (dataJSON["DANE_ALISIDE"]["ileproduktow"])
+            if count == int(WhenStop):
+                break
 
     f.close()
     print("Plik csv zawierający linki znajdziesz w " + os.getcwd())
-    print("Zaczynam pobieranie zdjęć.")
-    import subprocess
 
-    print("Uruchamiam PobieranieZdjec.py\n [...]")
-    subprocess.Popen("python PobieranieZdjec.py", shell=True)
+
+def fix_json():
+    f1 = open("to_fix.json", "r")
+    f2 = open("DATA.json", "w")
+
+    for line in f1:
+        f2.write(line.replace('}{', '  ,'))
+
+    try:
+        f1.close()
+        os.remove("to_fix.json")
+    except Exception as e:
+        print(e)
 
 
 TworzenieGlownegoPlikuCSV()
+
+fix_json()

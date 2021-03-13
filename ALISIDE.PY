@@ -1,5 +1,4 @@
 import time
-import pandas as pd
 import os
 from selenium.common.exceptions import NoSuchElementException
 import json
@@ -12,12 +11,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-
-with open('test.json')as f:
-    data = json.load(f)
-
 print("Uruchamiam CSVmaker.py [...]")
 subprocess.run("python CSVmaker.py", shell=True)
+with open('test.json')as f:
+    data = json.load(f)
+with open('DATA.json')as ff:
+    JSON = json.load(ff)
+
 subprocess.Popen("python PobieranieZdjec.py", shell=True)
 
 url = data['DANE_ALISIDE']["yupoo_link"]
@@ -28,8 +28,8 @@ browser = webdriver.Chrome(os.getcwd() + "\\Chromedriver")
 ilosc_produktow = range(int(data["DANE_ALISIDE"]["OdKtoregoProduktuDodawac"]),
                         (int(data["DANE_ALISIDE"]["ileproduktow"])))
 
-df = pd.read_csv(os.getcwd() + "\\bf3_strona.csv", sep=' ')
-opis = pd.read_csv(os.getcwd() + "\\opis.csv", sep=' ')
+
+opis = data['DANE_ALISIDE']["opis"]
 browser.get("https://aliside.com/login")
 SzukajXPATH = browser.find_element_by_xpath
 
@@ -150,11 +150,13 @@ def uzupelnienie_danych(y):
 
     makeDeeplink = api.post.create_creative(
 
-        link=df['NAME'][y],
+
+        link = JSON[str(y)]["NAME"],
         offerId=1,  # AliExpress
         description='Test Deeplink',
         type='deeplink'
     )
+
     newDeeplink = makeDeeplink['data']['attributes']['code']
     shortDomains = api.get.short_domains()
     allDomains = shortDomains['data']['attributes']
@@ -169,11 +171,11 @@ def uzupelnienie_danych(y):
     szukaj = browser.find_element
 
     head, sep, tail = text.partition('x.yupoo.com')
-    szukaj(By.ID, "description").send_keys(opis['OPIS'])
-    szukaj(By.ID, "note").send_keys(head + "x.yupoo.com" + df['LINKS'][y])
+    szukaj(By.ID, "description").send_keys(opis)
+    szukaj(By.ID, "note").send_keys(head + "x.yupoo.com" + JSON[str(y)]["LINKS"])
     szukaj(By.ID, "link").send_keys(LINKISKROCONE)
     try:
-        szukaj(By.ID, "name").send_keys(df['PHOTOS'][y])
+        szukaj(By.ID, "name").send_keys(JSON[str(y)]["PHOTOS"])
     except NoSuchElementException:
         szukaj(By.ID, "name").send_keys("Uzupełnij tytuł")
 

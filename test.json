@@ -1,25 +1,26 @@
 {
   "DANE_ALISIDE": 
     {
-      "haslo": "HASŁO",
-      "email": "EMAIL",
-      "LinkDoDodawania": "https://aliside.com/user/catalogs/[..]",
+      "haslo": ""haslo": ",
+      "email": ""email": ",
+      "LinkDoDodawania": "https://aliside.com/user/catalogs/[...]",
       "OdKtoregoProduktuDodawac": "0",
-      "ileproduktow": "120",
-      "yupoo_link": "https://876149655.x.yupoo.com/"
+      "ileproduktow": "5",
+      "yupoo_link": "https://1956109387.x.yupoo.com/albums?tab=gallery&page=2",
+      "opis": "opis"
     },
    
   "DANE_ADMITAD":
     {
-      "client_id": "client_id_FROM_ADMITAD",
-      "client_secret": "client_secret_FROM_ADMITAD"
+      "client_id": "client_id_ADMITAD",
+      "client_secret": "client_secret_ADMITAD"
     },
       
       "DANE_EPN":
     {
       "grant_type": "client_credential",
-      "client_id": "client_id_FROM_EPN",
-      "client_secret":"client_secret_FROM_EPN"
+      "client_id": "client_id_EPN",
+      "client_secret":"client_secret_EPN"
     }
 }
 
