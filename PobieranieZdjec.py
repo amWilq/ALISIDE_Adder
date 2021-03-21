@@ -7,6 +7,7 @@ import json
 import pandas as pd
 import requests
 import os
+import time
 
 with open('test.json')as f, open('DATA.json')as ff:
     dataJSON = json.load(f)
@@ -17,6 +18,7 @@ with open('test.json')as f, open('DATA.json')as ff:
 def TworzeniePlikowTESTY(X):
     try:
         with open((str(X) + 'TESTY.csv'), 'w', newline='') as file:
+            time.sleep(1)
             writer = csv.writer(file, delimiter=',')
 
             TEXT = JSON[str(X)]["LINKS"]
@@ -28,9 +30,11 @@ def TworzeniePlikowTESTY(X):
             response = requests.get(url, timeout=None)
             data = response.content
             soup = BeautifulSoup(data, 'lxml')
-
+            szukaj = soup.select('.image__landscape')
             writer.writerow([X])
-
+            for _ in szukaj:
+                q = _['data-src']
+                writer.writerow(['https:' + q])
             szukaj = soup.select('.image__portrait')
             for _ in szukaj:
                 q = _['data-src']
@@ -54,7 +58,7 @@ def zdjecia(x):
                 c.get('https://photo.yupoo.com/')
                 c.headers.update({'referer': 'https://photo.yupoo.com/'})
                 res = c.get(url, timeout=None)
-                with open(f'{folder}/{url.split("/")[-2]}.jpg', 'wb') as f:
+                with open(f'{folder}/{url.split("/")[-2]}.JPG', 'wb') as f:
                     f.write(res.content)
             except Exception as ConnError:
                 print(ConnError)
@@ -71,7 +75,8 @@ def zdjecia(x):
                         download_save(url, col)
                 print("Pobrano " + str(licznik) + " zdjęć.")
 
-        except Exception:
+        except Exception :
+            print(Exception)
             pass
         try:
             path = (os.getcwd() + '\\' + col)
@@ -82,6 +87,7 @@ def zdjecia(x):
             print(RenameError)
             pass
     except Exception:
+        print(Exception)
         pass
 
 
