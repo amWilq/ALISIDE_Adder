@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 test.json 
 
-opis.csv
+
 
 
 ## Running the script
@@ -26,5 +26,5 @@ python ALISIDE.py
 
 ### TO DO LIST
 
-- [ ] CHANGE THE DATA TO JSON FORMAT
+- [X] CHANGE THE DATA TO JSON FORMAT
 - [ ] UI
