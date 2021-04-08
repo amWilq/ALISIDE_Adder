@@ -9,7 +9,7 @@ import requests
 import os
 import time
 
-with open('test.json')as f, open('DATA.json')as ff:
+with open('data\\test.json')as f, open('data\\DATA.json')as ff:
     dataJSON = json.load(f)
     JSON = json.load(ff)
 
@@ -17,7 +17,7 @@ with open('test.json')as f, open('DATA.json')as ff:
 @retry(stop_max_attempt_number=5)
 def TworzeniePlikowTESTY(X):
     try:
-        with open((str(X) + 'TESTY.csv'), 'w', newline='') as file:
+        with open('data\\'+ (str(X) + 'TESTY.csv'), 'w', newline='') as file:
             time.sleep(1)
             writer = csv.writer(file, delimiter=',')
 
@@ -40,7 +40,7 @@ def TworzeniePlikowTESTY(X):
                 q = _['data-src']
                 writer.writerow(['https:' + q])
     except Exception as ex:
-        print(ex)
+        print(ex,"6")
         pass
 
 
@@ -53,18 +53,20 @@ def zdjecia(x):
 
         def download_save(url, folder):
             try:
+                folder = 'photos\\' + folder
                 create_directory(folder)
                 c = requests.Session()
                 c.get('https://photo.yupoo.com/')
                 c.headers.update({'referer': 'https://photo.yupoo.com/'})
                 res = c.get(url, timeout=None)
-                with open(f'{folder}/{url.split("/")[-2]}.JPG', 'wb') as f:
+                with open(f'{folder}/{url.split("/")[-2]}.jpg', 'wb') as f:
+
                     f.write(res.content)
             except Exception as ConnError:
                 print(ConnError)
                 pass
 
-        dfzdj = pd.read_csv(os.getcwd() + '\\' + str(x) + "TESTY.csv")
+        dfzdj = pd.read_csv(os.getcwd() + '\\data\\'+'\\' + str(x) + "TESTY.csv")
         licznik = 0
         try:
             for col in dfzdj.columns:
@@ -76,18 +78,18 @@ def zdjecia(x):
                 print("Pobrano " + str(licznik) + " zdjęć.")
 
         except Exception :
-            print(Exception)
+            print(Exception,"5")
             pass
         try:
-            path = (os.getcwd() + '\\' + col)
+            path = (os.getcwd() + '\\photos\\' + col)
             files = os.listdir(path)
             for index, file in enumerate(files):
                 os.rename(os.path.join(path, file), os.path.join(path, ''.join([str(index), 'big.jpg'])))
         except Exception as RenameError:
-            print(RenameError)
+            print(RenameError,"4")
             pass
     except Exception:
-        print(Exception)
+        print(Exception,"3")
         pass
 
 
@@ -98,7 +100,7 @@ for x in ilosc_produktow:
     TworzeniePlikowTESTY(x)
     zdjecia(x)
     try:
-        os.remove(str(x) + 'TESTY.csv')
+        os.remove('data\\'+str(x) + 'TESTY.csv')
     except Exception as e:
-        print(e)
+        print(e,"2")
         pass

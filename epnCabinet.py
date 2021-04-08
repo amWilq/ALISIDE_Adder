@@ -38,7 +38,7 @@ class init(object):
             self._auth_token()
 
     def _auth_token(self):
-        with open('epn.json', 'r') as config:
+        with open('data\\epn.json', 'r') as config:
             cfg = json.load(config)
 
         if cfg['data']['access_token'] and cfg['data']['refresh_token']:
@@ -50,7 +50,7 @@ class init(object):
             self._ssid()
 
     def _check_token(self):
-        """ Проверка токена """
+
 
         url = 'https://app.epn.bz/user/profile'
 
@@ -72,9 +72,9 @@ class init(object):
             return False
 
     def _save_session(self):
-        """ Сохранение токенов в файл """
 
-        config_file = 'epn.json'
+
+        config_file = 'data\\epn.json'
         with open(config_file, 'r') as config:
             cfg = json.load(config)
 
@@ -85,7 +85,7 @@ class init(object):
             json.dump(cfg, config)
 
     def _token_refresh(self):
-        """ Обновление токена """
+
 
         url = 'https://oauth2.epn.bz/token/refresh'
 
@@ -115,7 +115,7 @@ class init(object):
             self._ssid()
 
     def _ssid(self):
-        """ Получение SSID """
+
 
         url = 'https://oauth2.epn.bz/ssid'
 
@@ -137,7 +137,7 @@ class init(object):
             raise Exception('Error code: {}'.format(response.status_code))
 
     def _jwt_auth(self):
-        """ Авторизация """
+
 
         url = 'https://oauth2.epn.bz/token'
 
@@ -174,7 +174,7 @@ class init(object):
         return EpnApiMethod(self)
 
     def method(self, params, values = None):
-        """ Обработка запроса """
+
 
         query_params = params.split('.')
         type = query_params[0].lower()
@@ -188,14 +188,14 @@ class init(object):
             'epn_stat': '/stats/overall',           # api.get.epn_stat()
             'user_info': '/test/user-info',         # api.get.user_info()
             'transactions': '/transactions/user',   # api.get.transactions(tsFrom = '2019-12-23', tsTo = '2020-12-24', perPage = 1000)
-            'check_link': '/affiliate/checkLink',   # api.get.check_link(link = 'https://aliexpress.ru/item/4000581767061.html')
+            'check_link': '/affiliate/checkLink',   # api.get.check_link(link = 'https://aliexpress.pl/item/4000581767061.html')
             'short_domains': '/link-reduction/domain-cutter-list', # api.get.short_domains()
             'payments': '/user/payment/init',       # api.get.payments()
             'purses': '/user/purses/list'           # api.get.purses()
         }
 
         post_methods = {
-            'create_creative': '/creative/create',  # api.post.create_creative(link = 'https://aliexpress.ru/item/4000581767061.html', offerId = 1, description = 'test_deeplink', type = 'deeplink')
+            'create_creative': '/creative/create',  # api.post.create_creative(link = 'https://aliexpress.pl/item/4000581767061.html', offerId = 1, description = 'test_deeplink', type = 'deeplink')
             'short_link': '/link-reduction',        # api.post.short_link(urlContainer = 'https://aliexpress.ru/item/4000581767061.html', domainCutter = 'ali.pub')
             'payment_order': '/user/payment/order'  # api.post.payment_order(currency = 'USD', purseId = 1, amount = 1000)
         }

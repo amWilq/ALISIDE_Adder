@@ -13,8 +13,7 @@ from selenium.webdriver.common.by import By
 
 print("Uruchamiam CSVmaker.py [...]")
 subprocess.run("python CSVmaker.py", shell=True)
-
-with open('test.json')as f,open('DATA.json')as ff:
+with open('data\\test.json')as f, open('data\\DATA.json')as ff:
     data = json.load(f)
     JSON = json.load(ff)
 
@@ -23,75 +22,89 @@ subprocess.Popen("python PobieranieZdjec.py", shell=True)
 url = data['DANE_ALISIDE']["yupoo_link"]
 text = url
 
-
-browser = webdriver.Chrome(os.getcwd() + "\\Chromedriver")
+browser = webdriver.Chrome(os.getcwd() + "\\data\\Chromedriver")
 ilosc_produktow = range(int(data["DANE_ALISIDE"]["OdKtoregoProduktuDodawac"]),
                         (int(data["DANE_ALISIDE"]["ileproduktow"])))
-
 
 opis = data['DANE_ALISIDE']["opis"]
 browser.get("https://aliside.com/login")
 SzukajXPATH = browser.find_element_by_xpath
 
 
-def spinner():
-    time.sleep(2)
-    try:
-        SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/'
-                    'app-product-form/div/div/form/div/div[10]/btn-loading/button/div')
-        print("Błąd, czekam.")
-        time.sleep(120)
-    except NoSuchElementException:
-        pass
-    finally:
+def Spinner():
+    while True:
         try:
             SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/"
                         "app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
+            time.sleep(1)
+            browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/'
+                                          'div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button/div')
+            print("SPINNER, PONAWIAM PRÓBĘ ZA 5SEK")
+            time.sleep(5)
+
+        except NoSuchElementException:
+            break
+
+
+def ZaSzybkieDodanie():
+    while True:
+        try:
             SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/"
                         "app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
+            time.sleep(1)
+            browser.find_element_by_xpath('//*[@id="toast-container"]')
+            print("ZA SZYBKO, PONAWIAM PRÓBĘ ZA 5SEK")
+            time.sleep(5)
+
         except NoSuchElementException:
-            pass
+            break
 
 
-def capttcha():
-    try:
-        time.sleep(1)
-        SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/'
-                    'div[2]/app-product-form/div/div/form/div/div[10]/ngx-recaptcha2')
-        print('CAPTCHA, ODŚWIEŻAM STORNĘ [..]')
-        browser.refresh()
-    except NoSuchElementException:
-            pass
+def SprawdzanieKategori():
+    def Captcha():
+
+        while not True:
+            try:
+                time.sleep(2)
+                SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/'
+                            'div[2]/app-product-form/div/div/form/div/div[10]/ngx-recaptcha2')
+                print('CAPTCHA, ODŚWIEŻAM STORNĘ [..]')
+                browser.refresh()
+                print("loop, odswieżania1")
+            except NoSuchElementException:
+                pass
 
     while True:
+        time.sleep(1)
         t = SzukajXPATH('//*[@id="catalogs"]/div/div/tag-input-form/form/input')
         if t.get_attribute("aria-label") == "Wpisz nazwe katalogu":
+            print("Kategoria znaleziona.")
             break
-        else:
-            browser.refresh()
+    Captcha()
+    print("loop, odswieżania")
 
 
 def error():
     while True:
         try:
             SzukajXPATH('// *[ @ id = "catalogs"] / div / div / tag - input - form / form / input')
-            time.sleep(6)
+            time.sleep(2)
+            print("Błąd, odświeżam #1")
+            browser.refresh()
         except NoSuchElementException:
             break
 
     while True:
         try:
             SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-product/div[3]/div')
-            time.sleep(6)
-
+            time.sleep(2)
+            print("Błąd#2")
         except NoSuchElementException:
             break
 
     while True:
         try:
             SzukajXPATH('/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/app-page-loader/div')
-            time.sleep(5)
-
         except NoSuchElementException:
             break
 
@@ -103,8 +116,9 @@ def error():
                         'app - single - catalog / app - page - loader')
             SzukajXPATH('/ html / body / app - root / app - admin - layout / div / div[ 3] / '
                         'app - single - catalog / app - page - loader / div / div')
-            time.sleep(5)
-
+            time.sleep(2)
+            print("Błąd, odświeżam #4")
+            browser.refresh()
         except NoSuchElementException:
             break
 
@@ -123,7 +137,7 @@ logowanie()
 
 def przejscie_do_dodawania():
     LinkDoDodawania = (data["DANE_ALISIDE"]['LinkDoDodawania'])
-    spinner()
+
     browser.get(LinkDoDodawania)
     error()
     SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/"
@@ -133,6 +147,7 @@ def przejscie_do_dodawania():
 def uzupelnienie_danych(y):
 
     error()
+    SprawdzanieKategori()
 
     grant_type = (data["DANE_EPN"]['grant_type'])
     client_id = (data["DANE_EPN"]['client_id'])
@@ -150,8 +165,7 @@ def uzupelnienie_danych(y):
 
     makeDeeplink = api.post.create_creative(
 
-
-        link = JSON[str(y)]["NAME"],
+        link=JSON[str(y)]["NAME"],
         offerId=1,  # AliExpress
         description='Test Deeplink',
         type='deeplink'
@@ -176,7 +190,8 @@ def uzupelnienie_danych(y):
     szukaj(By.ID, "link").send_keys(LINKISKROCONE)
     try:
         szukaj(By.ID, "name").send_keys(JSON[str(y)]["PHOTOS"])
-    except NoSuchElementException:
+    except Exception as e:
+        print(e)
         szukaj(By.ID, "name").send_keys("Uzupełnij tytuł")
 
     szukaj(By.XPATH, "/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/ "
@@ -185,6 +200,16 @@ def uzupelnienie_danych(y):
 
 
 def przechodzenie_do_dodawania_zdj():
+    while True:
+        try:
+            SzukajXPATH(
+                "/html/body/app-root/app-admin-layout/div/div[3]/app-single-catalog/div[4]/div["
+                "1]/app-product-catalog-thumbnail/div/a/div/img")
+            print("strona załadowana.")
+            break
+        except Exception as ex:
+            print(ex)
+            browser.refresh()
 
     try:
         element_present = EC.presence_of_element_located((By.XPATH, '/html/body/app-root/app-admin-layout/'
@@ -207,17 +232,17 @@ def klikniece_dodaj_zdj():
 def dodawanie_zdj(a):
     time.sleep(3)
     z = 0
-    for filename in range(50):   # 50 ponieważ jest to maksymalna ilość zdjęć
+    for filename in range(50):  # 50 ponieważ jest to maksymalna ilość zdjęć
 
-        z = z+1
+        z = z + 1
         try:
-            path = (os.getcwd() + "\\" + str(a) + "\\" + str(z) + "big" + ".jpg")
+            path = (os.getcwd() + "\\photos\\" + str(a) + "\\" + str(z) + "big" + ".jpg")
             SzukajXPATH('/html/body/input').send_keys(path)
-        except Exception:
+        except:
             pass
 
         try:
-            pos = (os.getcwd() + "\\" + str(a - 1))
+            pos = (os.getcwd() + "\\photos\\" + str(a - 1))
             shutil.rmtree(pos)
             print("Usunięto folder ze zdjeciami.")
             print("Produkt nr:", [a], "dodano poprawnie.")
@@ -227,38 +252,14 @@ def dodawanie_zdj(a):
 
 
 def klikniecie_zapisz():
-
-    while True:
-        try:
-            SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/"
-                        "app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
-            time.sleep(1)
-            browser.find_element_by_xpath('/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/'
-                                          'div[2]/app-product-form/div/div/form/div/div[10]/btn-loading/button/div')
-            print("SPINNER, PONAWIAM PRÓBĘ ZA 5SEK")
-            time.sleep(5)
-
-        except NoSuchElementException:
-            break
-
-    while True:
-        try:
-            SzukajXPATH("/html/body/app-root/app-admin-layout/div/div[3]/app-create-product/div[2]/"
-                        "app-product-form/div/div/form/div/div[10]/btn-loading/button").click()
-            time.sleep(1)
-            browser.find_element_by_xpath('//*[@id="toast-container"]')
-            print("ZA SZYBKO, PONAWIAM PRÓBĘ ZA 5SEK")
-            time.sleep(5)
-
-        except NoSuchElementException:
-            break
+    Spinner()
+    ZaSzybkieDodanie()
 
 
-def pelene_uzupelenie_dachyncj(b):
+def pelene_uzupelenie_dachynch(b):
     error()
     przejscie_do_dodawania()
     error()
-    capttcha()
     uzupelnienie_danych(b)
     klikniecie_zapisz()
     error()
@@ -269,5 +270,14 @@ def pelene_uzupelenie_dachyncj(b):
     error()
 
 
-for x in ilosc_produktow:
-    pelene_uzupelenie_dachyncj(x)
+try:
+    for _ in ilosc_produktow:
+        pelene_uzupelenie_dachynch(_)
+    print("Dodano wszystko, zamykam przeglądarkę")
+    browser.close()
+except Exception as Zamkniecie:
+    print(Zamkniecie)
+    browser.close()
+
+if __name__ == '__main__':
+    pass
