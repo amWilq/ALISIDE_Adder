@@ -1,8 +1,8 @@
 {
   "DANE_ALISIDE": 
     {
-      "haslo": ""haslo": ",
-      "email": ""email": ",
+      "haslo": "haslo",
+      "email": "email",
       "LinkDoDodawania": "https://aliside.com/user/catalogs/[...]",
       "OdKtoregoProduktuDodawac": "0",
       "ileproduktow": "5",
